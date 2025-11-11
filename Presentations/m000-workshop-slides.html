@@ -1,0 +1,1836 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module M000: Cardano Background & Development Setup</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            overflow: hidden;
+        }
+
+        .slide-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slide {
+            width: 90%;
+            max-width: 1200px;
+            height: 85vh;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 60px;
+            display: none;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .slide.active {
+            display: flex;
+        }
+
+        .slide-header {
+            margin-bottom: 40px;
+        }
+
+        .slide-number {
+            color: #667eea;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            color: #2d3748;
+            font-size: 48px;
+            margin-bottom: 15px;
+            line-height: 1.2;
+        }
+
+        h2 {
+            color: #4a5568;
+            font-size: 36px;
+            margin-bottom: 25px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            color: #2d3748;
+            font-size: 28px;
+            margin: 25px 0 15px 0;
+        }
+
+        .subtitle {
+            color: #718096;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .content {
+            flex-grow: 1;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin: 30px 0;
+        }
+
+        .diagram {
+            background: #f7fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 30px;
+            margin: 25px 0;
+        }
+
+        .box {
+            background: #edf2f7;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .box-green {
+            background: #f0fff4;
+            border-left: 4px solid #48bb78;
+        }
+
+        .box-blue {
+            background: #ebf8ff;
+            border-left: 4px solid #4299e1;
+        }
+
+        .box-purple {
+            background: #faf5ff;
+            border-left: 4px solid #9f7aea;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 15px;
+            text-align: left;
+            border: 1px solid #e2e8f0;
+        }
+
+        .comparison-table th {
+            background: #667eea;
+            color: white;
+            font-weight: 600;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: #f7fafc;
+        }
+
+        ul, ol {
+            margin-left: 30px;
+            line-height: 1.8;
+            font-size: 20px;
+        }
+
+        li {
+            margin: 12px 0;
+            color: #4a5568;
+        }
+
+        .highlight {
+            background: #fef3c7;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-btn {
+            background: white;
+            border: 2px solid #667eea;
+            color: #667eea;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .nav-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .slide-counter {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            background: white;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-weight: 600;
+            color: #667eea;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .flow-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            margin: 30px 0;
+        }
+
+        .flow-box {
+            background: #667eea;
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            min-width: 150px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .flow-arrow {
+            font-size: 36px;
+            color: #667eea;
+        }
+
+        .icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .key-point {
+            background: #fff5f5;
+            border: 2px solid #fc8181;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 25px 0;
+            font-weight: 600;
+            color: #c53030;
+        }
+
+        .stack-diagram {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 25px 0;
+        }
+
+        .stack-item {
+            background: #edf2f7;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <!-- Slide 0: Title Slide (no slide number shown) -->
+        <div class="slide active">
+            <div class="content" style="display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
+                <div class="icon">🚀</div>
+                <h1>Module M000</h1>
+                <div class="subtitle">Cardano Background & Development Setup</div>
+                <div style="margin-top: 50px; font-size: 20px; color: #718096;">
+                    <p><strong>Duration:</strong> 2 hours</p>
+                    <p><strong>Format:</strong> 1 hour lecture + 1 hour hands-on</p>
+                    <p style="margin-top: 30px; color: #4a5568;">DirectEd x CATS Hackathon Aiken Development Workshop</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 1: Tutor Information -->
+        <div class="slide">
+            <div class="slide-header">
+                <div class="slide-number">SLIDE 1</div>
+                <h2>Your Instructor</h2>
+            </div>
+            <div class="content">
+                <div style="display: flex; align-items: center; gap: 60px; margin-top: 50px;">
+                    <div style="flex-shrink: 0;">
+                        <img src="Image1.png" alt="John Ndigirigi" style="width: 300px; height: 300px; border-radius: 50%; object-fit: cover; border: 5px solid #667eea; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+                    </div>
+                    <div style="flex-grow: 1;">
+                        <h1 style="font-size: 48px; margin-bottom: 20px; color: #667eea;">John Ndigirigi</h1>
+                        <p style="font-size: 24px; color: #4a5568; line-height: 1.6; margin-bottom: 40px;">
+                            Cardano blockchain developer and educator specializing in Aiken smart contract development.
+                        </p>
+                        <div style="display: flex; gap: 30px; margin-top: 40px;">
+                            <div class="box box-blue" style="flex: 1; text-align: center; padding: 25px;">
+                                <div style="font-size: 36px; margin-bottom: 15px;">𝕏</div>
+                                <p style="font-size: 18px; font-weight: 600;">@ndigirigi__john</p>
+                                <a href="https://x.com/ndigirigi__john" target="_blank"  style="font-size: 14px; color: #718096; margin-top: 5px;">Follow on X</a>
+                            </div>
+                            <div class="box box-blue" style="flex: 1; text-align: center; padding: 25px;">
+                                <div style="font-size: 36px; margin-bottom: 15px;">in</div>
+                                <p style="font-size: 18px; font-weight: 600;">linkedin.com/in/ndigirigijohn</p>
+                                <a href="https://www.linkedin.com/in/ndigirigijohn/" target="_blank" style="font-size: 14px; color: #718096; margin-top: 5px;">Connect on LinkedIn</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2: Module Overview -->
+        <div class="slide">
+            <div class="slide-header">
+                <div class="slide-number">SLIDE 2</div>
+                <h2>Module Overview</h2>
+            </div>
+            <div class="content">
+                <p style="font-size: 24px; color: #4a5568; margin-bottom: 30px;">
+                    Welcome to your first step in Cardano blockchain development!
+                </p>
+                
+                <div class="two-column">
+                    <div>
+                        <h3>What You'll Learn</h3>
+                        <ul>
+                            <li>Blockchain accounting models</li>
+                            <li>Cardano's unique eUTxO system</li>
+                            <li>Native assets on Cardano</li>
+                            <li>Development environment setup</li>
+                            <li>Writing your first Aiken tests</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3>Prerequisites</h3>
+                        <div class="box box-blue">
+                            <p style="font-size: 20px;">✓ Basic programming knowledge</p>
+                            <p style="font-size: 20px;">✓ Computer with internet access</p>
+                            <p style="font-size: 20px;">✓ Willingness to learn!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="key-point">
+                    <strong>Goal:</strong> Understand what makes Cardano different and prepare your development environment for writing smart contracts
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Learning Objectives Part 1 -->
+        <div class="slide">
+            <div class="slide-header">
+                <div class="slide-number">SLIDE 3</div>
+                <h2>Learning Objectives - Part 1</h2>
+            </div>
+            <div class="content">
+                <h3>1. Blockchain Fundamentals</h3>
+                <div class="box box-green">
+                    <ul>
+                        <li>Understand UTxO vs Account-based models</li>
+                        <li>Learn Cardano's eUTxO (Extended UTxO) model</li>
+                        <li>Recognize native assets on Cardano</li>
+                        <li>Learn about CIPs (Cardano Improvement Proposals)</li>
+                        <li>Understand wallets and transactions</li>
+                        <li>Grasp functional programming principles</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Learning Objectives Part 2 -->
+        <div class="slide">
+            <div class="slide-header">
+                <div class="slide-number">SLIDE 4</div>
+                <h2>Learning Objectives - Part 2</h2>
+            </div>
+            <div class="content">
+                <h3>2. Development Environment Setup</h3>
+                <div class="box box-purple">
+                    <ul>
+                        <li>Install Aiken development tools</li>
+                        <li>Configure Visual Studio Code</li>
+                        <li>Clone and navigate course repository</li>
+                        <li>Run your first Aiken tests</li>
+                        <li>Understand Aiken project structure</li>
+                    </ul>
+                </div>
+
+                <div style="margin-top: 40px; text-align: center; font-size: 22px; color: #667eea; font-weight: 600;">
+                    Let's dive into the blockchain fundamentals! 🎯
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Two Accounting Models -->
+        <div class="slide">
+            <div class="slide-header">
+                <div class="slide-number">SLIDE 5</div>
+                <h2>Understanding Blockchain Accounting Models</h2>
+            </div>
+            <div class="content">
+                <p style="font-size: 22px; margin-bottom: 30px;">Blockchains track ownership using two main models:</p>
+                
+                <div class="two-column">
+                    <div class="box box-blue">
+                        <h3>Account-Based Model</h3>
+                        <p style="font-size: 18px; margin: 15px 0;">Used by: <strong>Ethereum</strong></p>
+                        <p style="font-size: 18px;">💳 Like a bank account</p>
+                        <p style="font-size: 18px;">📊 Tracks account balances</p>
+                        <p style="font-size: 18px;">🔄 Modifies balances directly</p>
+                        <div style="margin-top: 20px; padding: 15px; background: white; border-radius: 8px;">
+                            <strong>Example:</strong><br/>
+                            "Ali has $20 in his account,<br/>take $5 from it"
+                        </div>
+                    </div>
+                    
+                    <div class="box box-green">
+                        <h3>UTxO Model</h3>
+                        <p style="font-size: 18px; margin: 15px 0;">Used by: <strong>Bitcoin, Cardano</strong></p>
+                        <p style="font-size: 18px;">💵 Like physical cash</p>
+                        <p style="font-size: 18px;">📝 Tracks unspent outputs</p>
+                        <p style="font-size: 18px;">🔀 Consumes inputs, creates outputs</p>
+                        <div style="margin-top: 20px; padding: 15px; background: white; border-radius: 8px;">
+                            <strong>Example:</strong><br/>
+                            "Ali has this $20 bill,<br/>give it and get $15 change"
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: UTxO Visual Diagram -->
+        <div class="slide">
+            <div class="slide-header">
+                <div class="slide-number">SLIDE 6</div>
+                <h2>UTxO Model Visualization</h2>
+            </div>
+            <div class="content">
+                <div class="diagram">
+                    <h3 style="text-align: center; margin-bottom: 30px;">Transaction Flow in UTxO Model</h3>
+                    
+                    <div style="display: flex; justify-content: space-around; align-items: center; margin: 40px 0;">
+                        <div style="text-align: center;">
+                            <div style="background: #48bb78; color: white; padding: 30px; border-radius: 12px; margin-bottom: 10px;">
+                                <div style="font-size: 24px; font-weight: bold;">INPUT</div>
+                                <div style="font-size: 18px; margin-top: 10px;">UTxO: 20 ADA</div>
+                            </div>
+                            <p style="font-size: 16px; color: #4a5568;">Unspent Output</p>
+                        </div>
+                        
+                        <div style="font-size: 48px; color: #667eea;">→</div>
+                        
+                        <div style="text-align: center;">
+                            <div style="background: #667eea; color: white; padding: 30px; border-radius: 12px; margin-bottom: 10px;">
+                                <div style="font-size: 24px; font-weight: bold;">TRANSACTION</div>
+                                <div style="font-size: 18px; margin-top: 10px;">Spend 5 ADA</div>
+                            </div>
+                            <p style="font-size: 16px; color: #4a5568;">Processing</p>
+                        </div>
+                        
+                        <div style="font-size: 48px; color: #667eea;">→</div>
+                        
+                        <div style="text-align: center;">
+                            <div style="background: #4299e1; color: white; padding: 20px; border-radius: 12px; margin-bottom: 10px;">
+                                <div style="font-size: 20px; font-weight: bold;">OUTPUT 1</div>
+                                <div style="font-size: 16px; margin-top: 8px;">5 ADA</div>
+                                <div style="font-size: 14px;">(to recipient)</div>
+                            </div>
+                            <div style="background: #4299e1; color: white; padding: 20px; border-radius: 12px;">
+                                <div style="font-size: 20px; font-weight: bold;">OUTPUT 2</div>
+                                <div style="font-size: 16px; margin-top: 8px;">15 ADA</div>
+                                <div style="font-size: 14px;">(change)</div>
+                            </div>
+                            <p style="font-size: 16px; color: #4a5568; margin-top: 10px;">New UTxOs</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="key-point">
+                    <strong>Key Insight:</strong> Original UTxO is completely consumed. New UTxOs are created as outputs.
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Why UTxO Matters -->
+        <div class="slide">
+            <div class="slide-header">
+                <div class="slide-number">SLIDE 7</div>
+                <h2>Why UTxO Matters for Smart Contracts</h2>
+            </div>
+            <div class="content">
+                <div class="two-column">
+                    <div>
+                        <h3>Key Benefits</h3>
+                        <div class="box box-green">
+                            <p style="font-size: 20px; margin: 15px 0;"><strong>🎯 Deterministic</strong></p>
+                            <p style="font-size: 18px;">Know exactly which UTxOs you're spending before submitting</p>
+                        </div>
+                        
+                        <div class="box box-blue">
+                            <p style="font-size: 20px; margin: 15px 0;"><strong>⚡ Parallel Processing</strong></p>
+                            <p style="font-size: 18px;">Different UTxOs can be processed simultaneously</p>
+                        </div>
+                        
+                        <div class="box box-purple">
+                            <p style="font-size: 20px; margin: 15px 0;"><strong>💾 Local State</strong></p>
+                            <p style="font-size: 18px;">Each UTxO carries its own data (datum)</p>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="diagram" style="height: 100%;">
+                            <h3>Smart Contract Concept</h3>
+                            <p style="font-size: 18px; margin: 20px 0;">
+                                In Cardano smart contracts, you <span class="highlight">validate</span> whether specific UTxOs can be spent, rather than modifying account balances.
+                            </p>
+                            <div style="background: white; padding: 20px; border-radius: 8px; margin-top: 20px;">
+                                <p style="font-size: 16px; font-style: italic; color: #718096;">
+                                    "Can this UTxO be spent given these conditions?"
+                                </p>
+                                <p style="font-size: 16px; margin-top: 15px; text-align: center;">
+                                    ✓ Valid → Transaction proceeds<br/>
+                                    ✗ Invalid → Transaction rejected
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: eUTxO Introduction -->
+        <div class="slide">
+            <div class="slide-header">
+                <div class="slide-number">SLIDE 8</div>
+                <h2>Cardano's eUTxO: Extended UTxO Model</h2>
+            </div>
+            <div class="content">
+                <p style="font-size: 22px; margin-bottom: 30px;">
+                    Cardano enhances Bitcoin's UTxO model with powerful smart contract capabilities
+                </p>
+
+                <div class="diagram">
+                    <h3 style="text-align: center; margin-bottom: 30px;">The Evolution: UTxO → eUTxO</h3>
+                    
+                    <div class="flow-diagram">
+                        <div class="flow-box" style="background: #718096;">
+                            <div>Bitcoin's UTxO</div>
+                            <div style="font-size: 14px; margin-top: 10px;">Basic Model</div>
+                        </div>
+                        
+                        <div class="flow-arrow">+</div>
+                        
+                        <div style="background: #f7fafc; padding: 20px; border-radius: 12px;">
+                            <p style="font-size: 16px; font-weight: 600; color: #4a5568;">Enhancements:</p>
+                            <p style="font-size: 14px; color: #718096;">• Datums</p>
+                            <p style="font-size: 14px; color: #718096;">• Redeemers</p>
+                            <p style="font-size: 14px; color: #718096;">• Script Context</p>
+                        </div>
+                        
+                        <div class="flow-arrow">=</div>
+                        
+                        <div class="flow-box">
+                            <div>Cardano's eUTxO</div>
+                            <div style="font-size: 14px; margin-top: 10px;">Smart Contracts!</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="key-point">
+                    <strong>Result:</strong> Bitcoin's security + Ethereum's smart contract power!
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: eUTxO Key Enhancements -->
+        <div class="slide">
+            <div class="slide-header">
+                <div class="slide-number">SLIDE 9</div>
+                <h2>Key Enhancements in eUTxO</h2>
+            </div>
+            <div class="content">
+                <div class="stack-diagram">
+                    <div class="stack-item" style="border-left-color: #48bb78;">
+                        <h3>1. Datums (Custom State)</h3>
+                        <p style="font-size: 18px; margin-top: 10px;">
+                            Each UTxO can carry custom data<br/>
+                            <span style="color: #718096;">💡 Think of it as attaching a note to a dollar bill</span><br/>
+                            <strong>Example:</strong> An NFT UTxO carries metadata about the artwork
+                        </p>
+                    </div>
+                    
+                    <div class="stack-item" style="border-left-color: #4299e1;">
+                        <h3>2. Redeemers (Spending Arguments)</h3>
+                        <p style="font-size: 18px; margin-top: 10px;">
+                            Arguments provided when spending a UTxO<br/>
+                            <span style="color: #718096;">🔑 Like showing proof you're allowed to spend</span><br/>
+                            <strong>Example:</strong> Providing a password or proof of ownership
+                        </p>
+                    </div>
+                    
+                    <div class="stack-item" style="border-left-color: #9f7aea;">
+                        <h3>3. Script Context (Transaction Awareness)</h3>
+                        <p style="font-size: 18px; margin-top: 10px;">
+                            Validators can see the entire transaction<br/>
+                            <span style="color: #718096;">👁️ Includes inputs, outputs, signatories, time ranges</span><br/>
+                            <strong>Enables:</strong> Complex validation based on transaction structure
+                        </p>
+                    </div>
+                    
+                    <div class="stack-item" style="border-left-color: #f6ad55;">
+                        <h3>4. Deterministic Validation</h3>
+                        <p style="font-size: 18px; margin-top: 10px;">
+                            Check if transaction will succeed BEFORE submitting<br/>
+                            <span style="color: #718096;">✅ Reduces failed transactions and wasted fees</span><br/>
+                            <strong>Benefit:</strong> More predictable dApp development
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: Real-World Analogy -->
+        <div class="slide">
+            <div class="slide-header">
+                <div class="slide-number">SLIDE 10</div>
+                <h2>Real-World Analogy: The Smart Safe</h2>
+            </div>
+            <div class="content">
+                <div class="two-column">
+                    <div class="box box-blue">
+                        <h3>Basic UTxO</h3>
+                        <div style="font-size: 48px; text-align: center; margin: 20px 0;">📨</div>
+                        <p style="font-size: 20px; text-align: center;">
+                            Sending cash in an envelope
+                        </p>
+                        <ul style="margin-top: 20px; font-size: 18px;">
+                            <li>Contains money</li>
+                            <li>Basic transaction</li>
+                            <li>Simple to open</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="box box-green">
+                        <h3>eUTxO</h3>
+                        <div style="font-size: 48px; text-align: center; margin: 20px 0;">🔐</div>
+                        <p style="font-size: 20px; text-align: center;">
+                            Sending cash in a smart safe
+                        </p>
+                        <ul style="margin-top: 20px; font-size: 18px;">
+                            <li>Has custom data written on it (datum)</li>
+                            <li>Requires specific conditions to open (validator)</li>
+                            <li>Can check who's opening it and when (context)</li>
+                            <li>Needs the right key or code (redeemer)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="key-point" style="margin-top: 30px;">
+                    <strong>Key Insight:</strong> eUTxO gives you Bitcoin's security and determinism PLUS Ethereum's smart contract expressiveness!
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11: Smart Contract Trinity -->
+        <div class="slide">
+            <div class="slide-header">
+                <div class="slide-number">SLIDE 11</div>
+                <h2>The Smart Contract Trinity</h2>
+            </div>
+            <div class="content">
+                <p style="font-size: 22px; margin-bottom: 30px; text-align: center;">
+                    On Cardano, smart contracts involve three key components:
+                </p>
+
+                <div class="diagram">
+                    <div style="display: flex; justify-content: space-around; margin: 40px 0;">
+                        <div style="text-align: center; flex: 1;">
+                            <div style="background: #48bb78; color: white; padding: 40px 20px; border-radius: 12px;">
+                                <div style="font-size: 36px; margin-bottom: 15px;">📦</div>
+                                <h3>DATUM</h3>
+                                <p style="font-size: 16px; margin-top: 15px;">The data locked at the script address</p>
+                            </div>
+                            <div style="margin-top: 20px; padding: 15px; background: #f0fff4; border-radius: 8px;">
+                                <p style="font-size: 14px; color: #276749;">Example: "Auction ends at 5pm"</p>
+                            </div>
+                        </div>
+                        
+                        <div style="text-align: center; flex: 1; margin: 0 20px;">
+                            <div style="background: #4299e1; color: white; padding: 40px 20px; border-radius: 12px;">
+                                <div style="font-size: 36px; margin-bottom: 15px;">🔑</div>
+                                <h3>REDEEMER</h3>
+                                <p style="font-size: 16px; margin-top: 15px;">The argument provided when spending</p>
+                            </div>
+                            <div style="margin-top: 20px; padding: 15px; background: #ebf8ff; border-radius: 8px;">
+                                <p style="font-size: 14px; color: #2c5282;">Example: "I'm bidding 100 ADA"</p>
+                            </div>
+                        </div>
+                        
+                        <div style="text-align: center; flex: 1;">
+                            <div style="background: #9f7aea; color: white; padding: 40px 20px; border-radius: 12px;">
+                                <div style="font-size: 36px; margin-bottom: 15px;">🔍</div>
+                                <h3>SCRIPT CONTEXT</h3>
+                                <p style="font-size: 16px; margin-top: 15px;">The transaction information</p>
+                            </div>
+                            <div style="margin-top: 20px; padding: 15px; background: #faf5ff; border-radius: 8px;">
+                                <p style="font-size: 14px; color: #553c9a;">Time, signers, inputs, outputs</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="box box-purple" style="margin-top: 30px;">
+                    <p style="font-size: 20px; text-align: center;">
+                        <strong>In Aiken:</strong> You'll write validators that receive datums, redeemers, and script context as parameters, and return True (valid) or False (invalid)
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 12: Native Assets -->
+        <div class="slide">
+            <div class="slide-header">
+                <div class="slide-number">SLIDE 12</div>
+                <h2>Native Assets on Cardano</h2>
+            </div>
+            <div class="content">
+                <p style="font-size: 22px; margin-bottom: 30px;">
+                    On Cardano, tokens are "native assets" - handled directly by the blockchain ledger, not by smart contracts.
+                </p>
+
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Cardano (Native)</th>
+                            <th>Ethereum (ERC-20)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Implementation</strong></td>
+                            <td>Built into ledger ✅</td>
+                            <td>Requires smart contract</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Complexity</strong></td>
+                            <td>Simple ✅</td>
+                            <td>More complex</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Security</strong></td>
+                            <td>High (ledger-level) ✅</td>
+                            <td>Depends on contract code</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Transaction Cost</strong></td>
+                            <td>Lower ✅</td>
+                            <td>Higher (gas for contract)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Ownership</strong></td>
+                            <td>Direct ledger entry ✅</td>
+                            <td>Contract manages ownership</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="key-point" style="margin-top: 30px;">
+                    <strong>Why This Matters:</strong> When you own a token on Cardano, you directly own it - only you can spend it. No smart contract needs to be called to transfer tokens, making it more secure and efficient!
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 13: Token Types -->
+        <div class="slide">
+            <div class="slide-header">
+                <div class="slide-number">SLIDE 13</div>
+                <h2>Types of Native Assets</h2>
+            </div>
+            <div class="content">
+                <div class="two-column" style="margin-top: 50px;">
+                    <div class="box box-blue" style="text-align: center;">
+                        <div style="font-size: 72px; margin-bottom: 20px;">💰</div>
+                        <h3>Fungible Tokens</h3>
+                        <p style="font-size: 20px; margin: 20px 0;">Each unit is identical</p>
+                        <div style="background: white; padding: 20px; border-radius: 8px; margin-top: 20px;">
+                            <p style="font-size: 18px;"><strong>Examples:</strong></p>
+                            <p style="font-size: 16px; margin-top: 10px;">ADA (Cardano's native currency)</p>
+                            <p style="font-size: 16px;">USD coins</p>
+                            <p style="font-size: 16px;">Loyalty points</p>
+                        </div>
+                        <p style="font-size: 18px; margin-top: 20px; color: #718096;">
+                            1 token = 1 token<br/>Interchangeable
+                        </p>
+                    </div>
+                    
+                    <div class="box box-green" style="text-align: center;">
+                        <div style="font-size: 72px; margin-bottom: 20px;">🎨</div>
+                        <h3>Non-Fungible Tokens (NFTs)</h3>
+                        <p style="font-size: 20px; margin: 20px 0;">Each token is unique</p>
+                        <div style="background: white; padding: 20px; border-radius: 8px; margin-top: 20px;">
+                            <p style="font-size: 18px;"><strong>Examples:</strong></p>
+                            <p style="font-size: 16px; margin-top: 10px;">Digital artwork</p>
+                            <p style="font-size: 16px;">Collectibles</p>
+                            <p style="font-size: 16px;">Property deeds</p>
+                        </div>
+                        <p style="font-size: 18px; margin-top: 20px; color: #718096;">
+                            Each token is different<br/>Not interchangeable
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 14: CIPs -->
+        <div class="slide">
+            <div class="slide-header">
+                <div class="slide-number">SLIDE 14</div>
+                <h2>Cardano Improvement Proposals (CIPs)</h2>
+            </div>
+            <div class="content">
+                <p style="font-size: 22px; margin-bottom: 30px;">
+                    CIPs are formal design documents that propose changes or standards for Cardano
+                </p>
+
+                <div class="two-column">
+                    <div>
+                        <h3>Types of CIPs</h3>
+                        <div class="box box-green">
+                            <p style="font-size: 20px; margin-bottom: 10px;"><strong>📋 Standards Track CIPs</strong></p>
+                            <p style="font-size: 16px; color: #718096;">Core protocol changes</p>
+                            <ul style="margin-top: 10px; font-size: 16px;">
+                                <li>CIP-25: NFT Metadata Standard</li>
+                                <li>CIP-30: Wallet API Standard</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="box box-blue">
+                            <p style="font-size: 20px; margin-bottom: 10px;"><strong>⚙️ Process CIPs</strong></p>
+                            <p style="font-size: 16px; color: #718096;">Community practices</p>
+                            <ul style="margin-top: 10px; font-size: 16px;">
+                                <li>How to submit a CIP</li>
+                                <li>Governance procedures</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="box box-purple">
+                            <p style="font-size: 20px; margin-bottom: 10px;"><strong>ℹ️ Informational CIPs</strong></p>
+                            <p style="font-size: 16px; color: #718096;">Guidelines & recommendations</p>
+                            <ul style="margin-top: 10px; font-size: 16px;">
+                                <li>Best practices</li>
+                                <li>Educational content</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="diagram" style="height: 100%;">
+                            <h3 style="text-align: center;">Why CIPs Matter</h3>
+                            <div style="margin-top: 30px;">
+                                <p style="font-size: 18px; margin: 20px 0;">
+                                    ✓ Community-driven evolution
+                                </p>
+                                <p style="font-size: 18px; margin: 20px 0;">
+                                    ✓ Standardized approaches
+                                </p>
+                                <p style="font-size: 18px; margin: 20px 0;">
+                                    ✓ Reference for developers
+                                </p>
+                                <p style="font-size: 18px; margin: 20px 0;">
+                                    ✓ Transparent process
+                                </p>
+                            </div>
+                            <div style="background: #fef3c7; padding: 20px; border-radius: 8px; margin-top: 30px;">
+                                <p style="font-size: 18px; text-align: center;">
+                                    <strong>🔗 Find CIPs at:</strong><br/>
+                                    <a href="https://cips.cardano.org/" style="color: #667eea;">cips.cardano.org</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 15: Wallets and Transactions -->
+        <div class="slide">
+            <div class="slide-header">
+                <div class="slide-number">SLIDE 15</div>
+                <h2>Wallets and Transactions</h2>
+            </div>
+            <div class="content">
+                <div class="two-column">
+                    <div>
+                        <h3>What is a Wallet?</h3>
+                        <p style="font-size: 18px; margin: 20px 0;">A Cardano wallet is software that helps you:</p>
+                        <div class="box box-blue">
+                            <p style="font-size: 18px; margin: 10px 0;">🏗️ Build transactions</p>
+                            <p style="font-size: 18px; margin: 10px 0;">✍️ Sign transactions with private keys</p>
+                            <p style="font-size: 18px; margin: 10px 0;">📤 Submit transactions to blockchain</p>
+                        </div>
+                        
+                        <div class="key-point" style="margin-top: 30px;">
+                            <strong>Note:</strong> In this course, we'll simulate transactions in tests. In production, wallets handle building, signing, and submission.
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3>Transaction Flow</h3>
+                        <div class="diagram">
+                            <div class="flow-diagram" style="flex-direction: column; align-items: stretch;">
+                                <div class="flow-box" style="width: 100%;">
+                                    1. User Action
+                                </div>
+                                <div style="text-align: center; font-size: 24px; color: #667eea; margin: 10px 0;">↓</div>
+                                <div class="flow-box" style="width: 100%; background: #4299e1;">
+                                    2. Wallet Builds Transaction<br/>
+                                    <span style="font-size: 14px;">Selects UTxOs, defines outputs, calculates fees</span>
+                                </div>
+                                <div style="text-align: center; font-size: 24px; color: #667eea; margin: 10px 0;">↓</div>
+                                <div class="flow-box" style="width: 100%; background: #9f7aea;">
+                                    3. User Signs Transaction<br/>
+                                    <span style="font-size: 14px;">Private key signature proves ownership</span>
+                                </div>
+                                <div style="text-align: center; font-size: 24px; color: #667eea; margin: 10px 0;">↓</div>
+                                <div class="flow-box" style="width: 100%; background: #48bb78;">
+                                    4. Wallet Submits to Network<br/>
+                                    <span style="font-size: 14px;">Transaction validated and added to blockchain</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 16: Shopping Analogy -->
+        <div class="slide">
+            <div class="slide-header">
+                <div class="slide-number">SLIDE 16</div>
+                <h2>Transaction Analogy: Online Shopping</h2>
+            </div>
+            <div class="content">
+                <p style="font-size: 22px; margin-bottom: 40px; text-align: center;">
+                    Think of using Cardano like online shopping:
+                </p>
+
+                <div class="diagram">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                        <div class="box box-blue" style="text-align: center;">
+                            <div style="font-size: 48px; margin-bottom: 15px;">🛍️</div>
+                            <h3>Browse</h3>
+                            <p style="font-size: 18px; margin-top: 15px;">User selects items</p>
+                            <p style="font-size: 16px; color: #718096; margin-top: 10px;">(Decides what to do)</p>
+                        </div>
+                        
+                        <div class="box box-green" style="text-align: center;">
+                            <div style="font-size: 48px; margin-bottom: 15px;">🛒</div>
+                            <h3>Cart</h3>
+                            <p style="font-size: 18px; margin-top: 15px;">Items added to cart</p>
+                            <p style="font-size: 16px; color: #718096; margin-top: 10px;">(Transaction being built)</p>
+                        </div>
+                        
+                        <div class="box box-purple" style="text-align: center;">
+                            <div style="font-size: 48px; margin-bottom: 15px;">💳</div>
+                            <h3>Checkout</h3>
+                            <p style="font-size: 18px; margin-top: 15px;">Payment with Cardano</p>
+                            <p style="font-size: 16px; color: #718096; margin-top: 10px;">(Wallet signs and submits)</p>
+                        </div>
+                        
+                        <div class="box" style="text-align: center; background: #fef3c7; border-left-color: #f6ad55;">
+                            <div style="font-size: 48px; margin-bottom: 15px;">✅</div>
+                            <h3>Confirmation</h3>
+                            <p style="font-size: 18px; margin-top: 15px;">Order confirmed</p>
+                            <p style="font-size: 16px; color: #718096; margin-top: 10px;">(Transaction on blockchain)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 17: Functional Programming -->
+        <div class="slide">
+            <div class="slide-header">
+                <div class="slide-number">SLIDE 17</div>
+                <h2>Functional Programming and eUTxO</h2>
+            </div>
+            <div class="content">
+                <p style="font-size: 22px; margin-bottom: 30px;">
+                    Cardano smart contracts use functional programming because it naturally matches the eUTxO model
+                </p>
+
+                <div class="two-column">
+                    <div>
+                        <h3>Think About Algebra</h3>
+                        <div class="box box-blue">
+                            <p style="font-size: 20px; margin-bottom: 15px;"><strong>Simple Function:</strong></p>
+                            <div class="code-block">y = 3x</div>
+                            <ul style="font-size: 16px;">
+                                <li>Input: x</li>
+                                <li>Process: multiply by 3</li>
+                                <li>Output: y</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="box box-green">
+                            <p style="font-size: 20px; margin-bottom: 15px;"><strong>Multiple Inputs:</strong></p>
+                            <div class="code-block">y = a + b + c</div>
+                        </div>
+                        
+                        <div class="box box-purple">
+                            <p style="font-size: 20px; margin-bottom: 15px;"><strong>Function Composition:</strong></p>
+                            <div class="code-block">y = 3x<br/>z = y + 5</div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3>Transactions as Functions</h3>
+                        <div class="diagram">
+                            <p style="font-size: 18px; margin-bottom: 20px;">Every Cardano transaction is like a mathematical function:</p>
+                            <div class="code-block" style="font-size: 14px;">
+transaction(inputs, redeemers, context)<br/>
+  → outputs
+                            </div>
+                            <p style="font-size: 16px; margin-top: 20px; line-height: 1.8;">
+                                <strong>Where:</strong><br/>
+                                • <strong>inputs</strong> = UTxOs to spend (each with datum)<br/>
+                                • <strong>redeemers</strong> = arguments proving right to spend<br/>
+                                • <strong>context</strong> = full transaction information<br/>
+                                • <strong>outputs</strong> = new UTxOs to create<br/>
+                                • <strong>Fee</strong> = sum(inputs) - sum(outputs)
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 18: Functional Programming Principles -->
+        <div class="slide">
+            <div class="slide-header">
+                <div class="slide-number">SLIDE 18</div>
+                <h2>Functional Programming Principles</h2>
+            </div>
+            <div class="content">
+                <div class="stack-diagram">
+                    <div class="stack-item" style="border-left-color: #48bb78;">
+                        <h3>Pure Functions</h3>
+                        <p style="font-size: 18px; margin-top: 10px;">
+                            Same input always gives same output<br/>
+                            <span style="color: #718096;">🎯 Predictable and testable</span>
+                        </p>
+                    </div>
+                    
+                    <div class="stack-item" style="border-left-color: #4299e1;">
+                        <h3>Immutability</h3>
+                        <p style="font-size: 18px; margin-top: 10px;">
+                            Data doesn't change, new data is created<br/>
+                            <span style="color: #718096;">🔒 No unexpected modifications</span>
+                        </p>
+                    </div>
+                    
+                    <div class="stack-item" style="border-left-color: #9f7aea;">
+                        <h3>No Side Effects</h3>
+                        <p style="font-size: 18px; margin-top: 10px;">
+                            Functions don't modify external state<br/>
+                            <span style="color: #718096;">✨ Everything is explicit</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="two-column" style="margin-top: 30px;">
+                    <div class="box box-green">
+                        <h3>Why This Fits Cardano</h3>
+                        <ul style="font-size: 18px;">
+                            <li>UTxOs are immutable</li>
+                            <li>Validators are pure functions</li>
+                            <li>No hidden state changes</li>
+                            <li>Datums are immutable</li>
+                            <li>Redeemers are input arguments</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="box box-blue">
+                        <h3>In Aiken</h3>
+                        <p style="font-size: 18px; margin: 15px 0;">
+                            You'll write validators as pure functions that:
+                        </p>
+                        <ul style="font-size: 18px;">
+                            <li>Receive datum, redeemer, context</li>
+                            <li>Return True (valid) or False (invalid)</li>
+                            <li>Have no side effects</li>
+                            <li>Are deterministic</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 19: Development Environment Setup -->
+        <div class="slide">
+            <div class="slide-header">
+                <div class="slide-number">SLIDE 19</div>
+                <h2>Part 2: Development Environment Setup</h2>
+            </div>
+            <div class="content">
+                <div style="text-align: center; margin-bottom: 40px;">
+                    <div class="icon">⚙️</div>
+                    <p style="font-size: 24px; color: #4a5568;">
+                        Now let's get your development environment ready!
+                    </p>
+                </div>
+
+                <div class="two-column">
+                    <div class="box box-blue">
+                        <h3>What We'll Install</h3>
+                        <ul style="font-size: 20px;">
+                            <li>Aiken toolchain</li>
+                            <li>Visual Studio Code</li>
+                            <li>Aiken VS Code extension</li>
+                            <li>Git (for version control)</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="box box-green">
+                        <h3>What You'll Learn</h3>
+                        <ul style="font-size: 20px;">
+                            <li>Create Aiken projects</li>
+                            <li>Write and run tests</li>
+                            <li>Understand project structure</li>
+                            <li>Debug with trace messages</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="key-point" style="margin-top: 40px;">
+                    <strong>Duration:</strong> This section takes about 60-70 minutes including hands-on practice
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 20: Installing Aiken -->
+        <div class="slide">
+            <div class="slide-header">
+                <div class="slide-number">SLIDE 20</div>
+                <h2>Installing Aiken</h2>
+            </div>
+            <div class="content">
+                <p style="font-size: 22px; margin-bottom: 30px;">
+                    Aiken is the programming language and toolchain for Cardano smart contracts
+                </p>
+
+                <div class="two-column">
+                    <div>
+                        <h3>Prerequisites</h3>
+                        <div class="box box-blue">
+                            <p style="font-size: 18px; margin: 10px 0;">✓ Node.js and npm (v16+ and 8+)</p>
+                            <p style="font-size: 18px; margin: 10px 0;">✓ Git (v2+)</p>
+                            <p style="font-size: 18px; margin: 10px 0;">✓ Visual Studio Code</p>
+                        </div>
+                        
+                        <h3 style="margin-top: 30px;">Verify Installations</h3>
+                        <div class="code-block">
+node --version<br/>
+npm --version<br/>
+git --version
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3>Installation Steps</h3>
+                        <div class="box box-green">
+                            <p style="font-size: 18px; margin-bottom: 15px;"><strong>1. Install aikup</strong></p>
+                            <div class="code-block" style="font-size: 14px;">
+npm install -g @aiken-lang/aikup
+                            </div>
+                        </div>
+                        
+                        <div class="box box-green">
+                            <p style="font-size: 18px; margin-bottom: 15px;"><strong>2. Install Aiken</strong></p>
+                            <div class="code-block" style="font-size: 14px;">
+aikup install latest
+                            </div>
+                        </div>
+                        
+                        <div class="box box-green">
+                            <p style="font-size: 18px; margin-bottom: 15px;"><strong>3. Verify</strong></p>
+                            <div class="code-block" style="font-size: 14px;">
+aiken --version<br/>
+# Should show v1.1.7 or higher
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="background: #fef3c7; padding: 20px; border-radius: 12px; margin-top: 30px; text-align: center;">
+                    <p style="font-size: 18px;">
+                        <strong>🔗 Detailed instructions:</strong> 
+                        <a href="https://aiken-lang.org/installation-instructions" style="color: #667eea;">aiken-lang.org/installation-instructions</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 21: VS Code Setup -->
+        <div class="slide">
+            <div class="slide-header">
+                <div class="slide-number">SLIDE 21</div>
+                <h2>Visual Studio Code Setup</h2>
+            </div>
+            <div class="content">
+                <div class="two-column">
+                    <div>
+                        <h3>Installing Aiken Extension</h3>
+                        <div class="box box-blue">
+                            <ol style="font-size: 18px; line-height: 2;">
+                                <li>Open Visual Studio Code</li>
+                                <li>Click Extensions icon (or Ctrl+Shift+X)</li>
+                                <li>Search for "Aiken"</li>
+                                <li>Click "Install" on official extension</li>
+                            </ol>
+                        </div>
+                        
+                        <div style="background: #f7fafc; padding: 20px; border-radius: 12px; margin-top: 20px; text-align: center;">
+                            <div style="font-size: 72px; margin-bottom: 15px;">💻</div>
+                            <p style="font-size: 18px; color: #4a5568;">Look for the official Aiken extension with the Aiken logo</p>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3>Features You'll Get</h3>
+                        <div class="stack-diagram">
+                            <div class="stack-item" style="border-left-color: #48bb78;">
+                                <p style="font-size: 18px;">✅ Syntax highlighting for .ak files</p>
+                            </div>
+                            <div class="stack-item" style="border-left-color: #4299e1;">
+                                <p style="font-size: 18px;">✅ Code completion and IntelliSense</p>
+                            </div>
+                            <div class="stack-item" style="border-left-color: #9f7aea;">
+                                <p style="font-size: 18px;">✅ Real-time error checking</p>
+                            </div>
+                            <div class="stack-item" style="border-left-color: #f6ad55;">
+                                <p style="font-size: 18px;">✅ Inline documentation</p>
+                            </div>
+                            <div class="stack-item" style="border-left-color: #fc8181;">
+                                <p style="font-size: 18px;">✅ Automatic formatting on save</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 22: Creating First Project -->
+        <div class="slide">
+            <div class="slide-header">
+                <div class="slide-number">SLIDE 22</div>
+                <h2>Creating Your First Aiken Project</h2>
+            </div>
+            <div class="content">
+                <div class="box box-green">
+                    <h3>Step 1: Create Development Folder</h3>
+                    <div class="code-block">
+# Create in home directory<br/>
+mkdir ~/cardano-dev<br/>
+cd ~/cardano-dev
+                    </div>
+                </div>
+
+                <div class="box box-blue">
+                    <h3>Step 2: Create New Aiken Project</h3>
+                    <div class="code-block">
+# Create project called "hello-aiken"<br/>
+aiken new hello-aiken<br/><br/>
+# Navigate into project<br/>
+cd hello-aiken
+                    </div>
+                </div>
+
+                <div class="box box-purple">
+                    <h3>Step 3: Open in VS Code</h3>
+                    <div class="code-block">
+code .
+                    </div>
+                    <p style="font-size: 18px; margin-top: 15px;">This opens the entire project with syntax highlighting ready!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 23: Project Structure -->
+        <div class="slide">
+            <div class="slide-header">
+                <div class="slide-number">SLIDE 23</div>
+                <h2>Understanding Aiken Project Structure</h2>
+            </div>
+            <div class="content">
+                <div class="two-column">
+                    <div>
+                        <h3>Project Files & Folders</h3>
+                        <div class="code-block" style="font-size: 16px;">
+hello-aiken/<br/>
+├── aiken.toml<br/>
+├── lib/<br/>
+├── validators/<br/>
+└── README.md
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3>What Each Does</h3>
+                        <div class="stack-diagram">
+                            <div class="stack-item" style="border-left-color: #48bb78;">
+                                <p style="font-size: 18px;"><strong>aiken.toml</strong></p>
+                                <p style="font-size: 16px; color: #718096;">Project configuration, dependencies, compiler settings</p>
+                            </div>
+                            
+                            <div class="stack-item" style="border-left-color: #4299e1;">
+                                <p style="font-size: 18px;"><strong>validators/</strong></p>
+                                <p style="font-size: 16px; color: #718096;">Smart contract validators - controls how UTxOs can be spent</p>
+                            </div>
+                            
+                            <div class="stack-item" style="border-left-color: #9f7aea;">
+                                <p style="font-size: 18px;"><strong>lib/</strong></p>
+                                <p style="font-size: 16px; color: #718096;">Reusable code, helper functions, type definitions</p>
+                            </div>
+                            
+                            <div class="stack-item" style="border-left-color: #f6ad55;">
+                                <p style="font-size: 18px;"><strong>README.md</strong></p>
+                                <p style="font-size: 16px; color: #718096;">Project documentation</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 24: First Test -->
+        <div class="slide">
+            <div class="slide-header">
+                <div class="slide-number">SLIDE 24</div>
+                <h2>Writing Your First Test</h2>
+            </div>
+            <div class="content">
+                <div class="box box-green">
+                    <h3>Create validators/hello.ak</h3>
+                    <div class="code-block">
+// A simple function that returns true<br/>
+test hello_world() {<br/>
+  True<br/>
+}<br/><br/>
+// A test with basic math<br/>
+test basic_math() {<br/>
+  let x = 5<br/>
+  let y = 10<br/>
+  x + y == 15<br/>
+}<br/><br/>
+// A test with trace message<br/>
+test with_trace() {<br/>
+  trace @"Hello from Aiken!"<br/>
+  True<br/>
+}
+                    </div>
+                </div>
+
+                <div class="box box-blue">
+                    <h3>Run Your Tests</h3>
+                    <div class="code-block">
+aiken check
+                    </div>
+                    <p style="font-size: 18px; margin-top: 15px;">You should see all tests pass with memory and CPU usage!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 25: Test Output -->
+        <div class="slide">
+            <div class="slide-header">
+                <div class="slide-number">SLIDE 25</div>
+                <h2>Understanding Test Output</h2>
+            </div>
+            <div class="content">
+                <div class="box box-green">
+                    <h3>Successful Test Output</h3>
+                    <div class="code-block">
+Testing hello-aiken<br/><br/>
+  ┍━ validators/hello ━━━━━━━━━━━━━━<br/>
+  │ PASS [mem: 100, cpu: 100] hello_world<br/>
+  │ PASS [mem: 200, cpu: 300] basic_math<br/>
+  │ PASS [mem: 150, cpu: 250] with_trace<br/>
+  ┕━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━<br/><br/>
+  Summary<br/>
+      3 tests | 3 passed | 0 failed
+                    </div>
+                </div>
+
+                <div class="two-column" style="margin-top: 30px;">
+                    <div class="box box-blue">
+                        <h3>What the Numbers Mean</h3>
+                        <p style="font-size: 18px; margin: 15px 0;">
+                            <strong>mem:</strong> Memory units used<br/>
+                            <strong>cpu:</strong> CPU steps consumed
+                        </p>
+                        <p style="font-size: 16px; color: #718096; margin-top: 15px;">
+                            These affect transaction costs on-chain
+                        </p>
+                    </div>
+                    
+                    <div class="box" style="background: #fff5f5; border-left-color: #fc8181;">
+                        <h3>When Tests Fail</h3>
+                        <div class="code-block" style="background: #742a2a;">
+FAIL [mem: 1234, cpu: 456789]<br/>
+  ✗ Assertion failed<br/>
+    Expected: True<br/>
+    Got: False
+                        </div>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: 30px; font-size: 48px;">
+                    🎉
+                </div>
+                <p style="text-align: center; font-size: 24px; color: #48bb78; font-weight: 600;">
+                    Congratulations! You've just run your first Aiken tests!
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 26: Trace Messages -->
+        <div class="slide">
+            <div class="slide-header">
+                <div class="slide-number">SLIDE 26</div>
+                <h2>Debugging with Trace Messages</h2>
+            </div>
+            <div class="content">
+                <p style="font-size: 22px; margin-bottom: 30px;">
+                    Trace messages help you debug and understand your code's execution
+                </p>
+
+                <div class="box box-blue">
+                    <h3>Example with Trace</h3>
+                    <div class="code-block">
+test experiment() {<br/>
+  trace @"Testing a calculation"<br/>
+  let result = 7 * 6<br/>
+  trace @"Result calculated"<br/>
+  result == 42<br/>
+}
+                    </div>
+                </div>
+
+                <div class="box box-green">
+                    <h3>Run Specific Test</h3>
+                    <div class="code-block">
+aiken check -m experiment
+                    </div>
+                    <p style="font-size: 18px; margin-top: 15px;">You'll see your trace messages in the output!</p>
+                </div>
+
+                <div class="key-point" style="margin-top: 30px;">
+                    <strong>Tip:</strong> Use trace messages to see intermediate values and understand how your code executes. They're invaluable for debugging complex validators!
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 27: Hands-On Exercises Overview -->
+        <div class="slide">
+            <div class="slide-header">
+                <div class="slide-number">SLIDE 27</div>
+                <h2>Hands-On Exercises</h2>
+            </div>
+            <div class="content">
+                <div style="text-align: center; margin-bottom: 40px;">
+                    <div class="icon">👨‍💻</div>
+                    <p style="font-size: 24px; color: #4a5568;">
+                        Time to practice what you've learned!
+                    </p>
+                </div>
+
+                <div class="two-column">
+                    <div class="box box-blue">
+                        <h3>Exercise 1 (10 min)</h3>
+                        <p style="font-size: 18px;">Environment Verification</p>
+                        <p style="font-size: 16px; color: #718096; margin-top: 10px;">Verify all tools are installed correctly</p>
+                    </div>
+                    
+                    <div class="box box-green">
+                        <h3>Exercise 2 (15 min)</h3>
+                        <p style="font-size: 18px;">Create First Project</p>
+                        <p style="font-size: 16px; color: #718096; margin-top: 10px;">Build workshop-m000 project with tests</p>
+                    </div>
+                    
+                    <div class="box box-purple">
+                        <h3>Exercise 3 (15 min)</h3>
+                        <p style="font-size: 18px;">Experiment with Tests</p>
+                        <p style="font-size: 16px; color: #718096; margin-top: 10px;">Test different data types and operators</p>
+                    </div>
+                    
+                    <div class="box" style="background: #fef3c7; border-left-color: #f6ad55;">
+                        <h3>Exercise 4 (15 min)</h3>
+                        <p style="font-size: 18px;">Working with Traces</p>
+                        <p style="font-size: 16px; color: #718096; margin-top: 10px;">Add trace messages for debugging</p>
+                    </div>
+                </div>
+
+                <div class="box" style="background: #fff5f5; border-left-color: #fc8181; margin-top: 30px;">
+                    <h3>Exercise 5 (10 min)</h3>
+                    <p style="font-size: 18px;">Project Organization</p>
+                    <p style="font-size: 16px; color: #718096; margin-top: 10px;">Create multiple validator files and organize code</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 28: Assignment Overview -->
+        <div class="slide">
+            <div class="slide-header">
+                <div class="slide-number">SLIDE 28</div>
+                <h2>Assignment M000</h2>
+            </div>
+            <div class="content">
+                <h3 style="margin-bottom: 20px;">Objective</h3>
+                <p style="font-size: 20px; margin-bottom: 30px;">
+                    Set up your Aiken development environment, create your first project, and demonstrate understanding of Cardano fundamentals
+                </p>
+
+                <div class="two-column">
+                    <div>
+                        <div class="box box-green">
+                            <h3>Tasks</h3>
+                            <ol style="font-size: 18px; line-height: 2;">
+                                <li>Install Aiken and verify</li>
+                                <li>Install VS Code with Aiken extension</li>
+                                <li>Create project: m000-assignment</li>
+                                <li>Write minimum 5 passing tests</li>
+                                <li>Include tests with trace messages</li>
+                                <li>Test boolean, integer, comparison operations</li>
+                            </ol>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="box box-blue">
+                            <h3>What to Submit</h3>
+                            <ul style="font-size: 18px; line-height: 2;">
+                                <li>Personal details</li>
+                                <li>GitHub repository URL</li>
+                                <li>Description of your work</li>
+                                <li>What you learned</li>
+                                <li>Challenges and solutions</li>
+                                <li>Understanding of UTxO vs eUTxO</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="key-point" style="margin-top: 20px;">
+                            <strong>Deadline:</strong> Submit before Workshop M001 begins
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 29: Troubleshooting -->
+        <div class="slide">
+            <div class="slide-header">
+                <div class="slide-number">SLIDE 29</div>
+                <h2>Troubleshooting Common Issues</h2>
+            </div>
+            <div class="content">
+                <div class="stack-diagram">
+                    <div class="stack-item" style="border-left-color: #fc8181;">
+                        <h3>Issue: "aiken: command not found"</h3>
+                        <p style="font-size: 16px; color: #718096; margin: 10px 0;">Add Aiken to your PATH:</p>
+                        <div class="code-block" style="font-size: 14px;">
+echo 'export PATH="$HOME/.aiken/bin:$PATH"' >> ~/.bashrc<br/>
+source ~/.bashrc
+                        </div>
+                    </div>
+                    
+                    <div class="stack-item" style="border-left-color: #f6ad55;">
+                        <h3>Issue: Permission Denied Errors</h3>
+                        <p style="font-size: 16px; color: #718096; margin: 10px 0;">Use sudo for npm install:</p>
+                        <div class="code-block" style="font-size: 14px;">
+sudo npm install -g @aiken-lang/aikup
+                        </div>
+                    </div>
+                    
+                    <div class="stack-item" style="border-left-color: #4299e1;">
+                        <h3>Issue: VS Code Extension Not Working</h3>
+                        <ul style="font-size: 16px; margin-top: 10px;">
+                            <li>Ensure latest VS Code version</li>
+                            <li>Restart VS Code after installing</li>
+                            <li>Check extension is enabled</li>
+                            <li>Open a .ak file to trigger activation</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div style="background: #fef3c7; padding: 20px; border-radius: 12px; margin-top: 20px; text-align: center;">
+                    <p style="font-size: 18px;">
+                        <strong>Need help?</strong> Check the Troubleshooting Guide in the module document or ask in the workshop Discord!
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 30: Additional Resources -->
+        <div class="slide">
+            <div class="slide-header">
+                <div class="slide-number">SLIDE 30</div>
+                <h2>Additional Resources</h2>
+            </div>
+            <div class="content">
+                <div class="two-column">
+                    <div>
+                        <div class="box box-blue">
+                            <h3>📚 Documentation</h3>
+                            <ul style="font-size: 16px; line-height: 2;">
+                                <li>Aiken Official Docs</li>
+                                <li>Aiken Language Tour</li>
+                                <li>Aiken Standard Library</li>
+                                <li>Cardano Developer Portal</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="box box-green">
+                            <h3>🎥 Videos</h3>
+                            <ul style="font-size: 16px; line-height: 2;">
+                                <li>DirectEd YouTube Channel</li>
+                                <li>Aiken Getting Started tutorials</li>
+                                <li>Cardano Fundamentals series</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="box box-purple">
+                            <h3>👥 Community</h3>
+                            <ul style="font-size: 16px; line-height: 2;">
+                                <li>Workshop Discord Server</li>
+                                <li>Cardano Forum</li>
+                                <li>Aiken GitHub</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="box" style="background: #fef3c7; border-left-color: #f6ad55;">
+                            <h3>📖 Further Reading</h3>
+                            <ul style="font-size: 16px; line-height: 2;">
+                                <li>CIP-25: NFT Metadata Standard</li>
+                                <li>CIP-30: Cardano dApp-Wallet Bridge</li>
+                                <li>UTxO Model: Bitcoin whitepaper</li>
+                                <li>EUTxO Paper: Extended model</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 31: Key Takeaways -->
+        <div class="slide">
+            <div class="slide-header">
+                <div class="slide-number">SLIDE 31</div>
+                <h2>Key Takeaways</h2>
+            </div>
+            <div class="content">
+                <p style="font-size: 22px; margin-bottom: 30px; text-align: center;">
+                    By completing this module, you should now:
+                </p>
+
+                <div class="stack-diagram">
+                    <div class="stack-item" style="border-left-color: #48bb78;">
+                        <p style="font-size: 20px;">✅ Understand why Cardano uses the UTxO model</p>
+                    </div>
+                    
+                    <div class="stack-item" style="border-left-color: #4299e1;">
+                        <p style="font-size: 20px;">✅ Know how eUTxO extends UTxO with datums, redeemers, and script context</p>
+                    </div>
+                    
+                    <div class="stack-item" style="border-left-color: #9f7aea;">
+                        <p style="font-size: 20px;">✅ Know what makes native assets special on Cardano</p>
+                    </div>
+                    
+                    <div class="stack-item" style="border-left-color: #f6ad55;">
+                        <p style="font-size: 20px;">✅ Recognize how CIPs drive Cardano's evolution</p>
+                    </div>
+                    
+                    <div class="stack-item" style="border-left-color: #fc8181;">
+                        <p style="font-size: 20px;">✅ Have a working Aiken development environment</p>
+                    </div>
+                    
+                    <div class="stack-item" style="border-left-color: #667eea;">
+                        <p style="font-size: 20px;">✅ Be able to run and modify Aiken tests</p>
+                    </div>
+                    
+                    <div class="stack-item" style="border-left-color: #48bb78;">
+                        <p style="font-size: 20px;">✅ Understand basic Aiken project structure</p>
+                    </div>
+                    
+                    <div class="stack-item" style="border-left-color: #4299e1;">
+                        <p style="font-size: 20px;">✅ Be ready to write your first smart contract in M001</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 32: What's Next -->
+        <div class="slide">
+            <div class="slide-header">
+                <div class="slide-number">SLIDE 32</div>
+                <h2>What's Next: Module M001</h2>
+            </div>
+            <div class="content">
+                <div style="text-align: center; margin-bottom: 40px;">
+                    <div class="icon">🚀</div>
+                    <h1 style="font-size: 42px; color: #667eea;">Writing Your First Smart Contract</h1>
+                </div>
+
+                <div class="box box-blue" style="font-size: 20px; text-align: center; padding: 40px;">
+                    <p style="margin: 20px 0;">In the next module, you'll write your first Aiken validator - a smart contract that controls how funds can be spent on Cardano.</p>
+                    
+                    <p style="margin: 20px 0;">You'll learn about:</p>
+                    <ul style="display: inline-block; text-align: left; margin-top: 20px;">
+                        <li>Validator structure and syntax</li>
+                        <li>Type signatures in Aiken</li>
+                        <li>Working with datums and redeemers</li>
+                        <li>Testing contracts with mock transactions</li>
+                        <li>Building your first working validator</li>
+                    </ul>
+                </div>
+
+                <div style="text-align: center; margin-top: 50px; font-size: 24px; color: #4a5568;">
+                    <p><strong>Questions?</strong></p>
+                    <p style="margin-top: 15px;">Ask in the workshop chat, visit office hours, or post in the workshop Discord server!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 33: Thank You -->
+        <div class="slide">
+            <div class="slide-header">
+                <div class="slide-number">SLIDE 33</div>
+            </div>
+            <div class="content" style="display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; height: 100%;">
+                <div class="icon">🎉</div>
+                <h1 style="font-size: 56px; margin-bottom: 30px;">Thank You!</h1>
+                <p style="font-size: 32px; color: #4a5568; margin-bottom: 40px;">
+                    Module M000 Complete
+                </p>
+                <div style="font-size: 24px; color: #718096; line-height: 2;">
+                    <p>DirectEd x CATS Hackathon</p>
+                    <p>Aiken Development Workshop</p>
+                    <p style="margin-top: 40px; font-size: 20px;">See you in Module M001! 🚀</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide-counter">
+        <span id="current-slide"></span><span id="slide-separator"> / </span><span id="total-slides">34</span>
+    </div>
+
+    <div class="navigation">
+        <button class="nav-btn" id="prev-btn" onclick="previousSlide()">← Previous</button>
+        <button class="nav-btn" id="next-btn" onclick="nextSlide()">Next →</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        const currentSlideSpan = document.getElementById('current-slide');
+        const totalSlidesSpan = document.getElementById('total-slides');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+
+        totalSlidesSpan.textContent = totalSlides;
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+            
+            // Show slide counter starting from slide 1 onwards, hide for slide 0
+            const slideCounter = document.querySelector('.slide-counter');
+            if (currentSlide === 0) {
+                slideCounter.style.display = 'none';
+            } else {
+                slideCounter.style.display = 'block';
+                currentSlideSpan.textContent = currentSlide;
+            }
+
+            // Update button states
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === totalSlides - 1;
+
+            // Scroll to top of slide
+            slides[currentSlide].scrollTop = 0;
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                showSlide(currentSlide + 1);
+            }
+        }
+
+        function previousSlide() {
+            if (currentSlide > 0) {
+                showSlide(currentSlide - 1);
+            }
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                previousSlide();
+            }
+        });
+
+        // Initialize
+        showSlide(0);
+    </script>
+</body>
+</html>
