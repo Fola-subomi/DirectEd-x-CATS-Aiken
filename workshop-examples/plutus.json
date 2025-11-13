@@ -1,0 +1,206 @@
+{
+  "preamble": {
+    "title": "ndigirigijohn/workshop-examples",
+    "description": "Aiken contracts for project 'ndigirigijohn/workshop-examples'",
+    "version": "0.0.0",
+    "plutusVersion": "v3",
+    "compiler": {
+      "name": "Aiken",
+      "version": "v1.1.15+unknown"
+    },
+    "license": "Apache-2.0"
+  },
+  "validators": [
+    {
+      "title": "m001/first_spend.escrow.spend",
+      "datum": {
+        "title": "datum_opt",
+        "schema": {
+          "$ref": "#/definitions/m001~1first_spend~1EscrowDatum"
+        }
+      },
+      "redeemer": {
+        "title": "redeemer",
+        "schema": {
+          "$ref": "#/definitions/m001~1first_spend~1EscrowRedeemer"
+        }
+      },
+      "compiledCode": "59017801010029800aba2aba1aab9faab9eaab9dab9a48888896600264653001300700198039804000cc01c0092225980099b8748008c01cdd500144c8cc8a60022b30013001300a37540051332259800980198061baa0088991919800800801912cc00400629422b30013371e6eb8c04800400e2946266004004602600280710111bae300f300d3754005159800991919800800801912cc00400629422b30013371e6eb8c04800400e2946266004004602600280710111bae300f300d375400513232330010010032259800800c528456600266e3cdd71809000801c528c4cc008008c04c00500e2022375c601e6020601a6ea800a294100b2016300d300b37540046eb0c034c038c038c038c038c038c038c038c038c02cdd50024590094c028dd50034c03400d2225980098020014566002601c6ea802600716403d15980099b874800800a2b3001300e37540130038b201e8b20184030300b300c001370e900018041baa0028b200c180380098019baa0078a4d13656400401",
+      "hash": "6a0212ada96eee29ebee221d8092604c7e7cbc2a843a76db409e5e67"
+    },
+    {
+      "title": "m001/first_spend.escrow.else",
+      "redeemer": {
+        "schema": {}
+      },
+      "compiledCode": "59017801010029800aba2aba1aab9faab9eaab9dab9a48888896600264653001300700198039804000cc01c0092225980099b8748008c01cdd500144c8cc8a60022b30013001300a37540051332259800980198061baa0088991919800800801912cc00400629422b30013371e6eb8c04800400e2946266004004602600280710111bae300f300d3754005159800991919800800801912cc00400629422b30013371e6eb8c04800400e2946266004004602600280710111bae300f300d375400513232330010010032259800800c528456600266e3cdd71809000801c528c4cc008008c04c00500e2022375c601e6020601a6ea800a294100b2016300d300b37540046eb0c034c038c038c038c038c038c038c038c038c02cdd50024590094c028dd50034c03400d2225980098020014566002601c6ea802600716403d15980099b874800800a2b3001300e37540130038b201e8b20184030300b300c001370e900018041baa0028b200c180380098019baa0078a4d13656400401",
+      "hash": "6a0212ada96eee29ebee221d8092604c7e7cbc2a843a76db409e5e67"
+    },
+    {
+      "title": "m001/validator_structure.nft_policy.mint",
+      "redeemer": {
+        "title": "redeemer",
+        "schema": {
+          "$ref": "#/definitions/m001~1validator_structure~1MintRedeemer"
+        }
+      },
+      "compiledCode": "589201010029800aba2aba1aab9faab9eaab9dab9a48888896600264653001300700198039804000cc01c0092225980099b8748000c01cdd500144c96600266e1d2000300837540091323259800980700146600266e3cdd7180698059baa00648900a50a5140251640306eb8c030004c024dd50024590071bae300a3008375400516401830070013003375400f149a26cac80081",
+      "hash": "04412da625cf768e3704d16e48fbe772ecef1fab3db82f945c228380"
+    },
+    {
+      "title": "m001/validator_structure.nft_policy.else",
+      "redeemer": {
+        "schema": {}
+      },
+      "compiledCode": "589201010029800aba2aba1aab9faab9eaab9dab9a48888896600264653001300700198039804000cc01c0092225980099b8748000c01cdd500144c96600266e1d2000300837540091323259800980700146600266e3cdd7180698059baa00648900a50a5140251640306eb8c030004c024dd50024590071bae300a3008375400516401830070013003375400f149a26cac80081",
+      "hash": "04412da625cf768e3704d16e48fbe772ecef1fab3db82f945c228380"
+    },
+    {
+      "title": "m001/validator_structure.vending_machine.spend",
+      "datum": {
+        "title": "datum_opt",
+        "schema": {
+          "$ref": "#/definitions/m001~1validator_structure~1VendingMachineDatum"
+        }
+      },
+      "redeemer": {
+        "title": "redeemer",
+        "schema": {
+          "$ref": "#/definitions/m001~1validator_structure~1VendingMachineRedeemer"
+        }
+      },
+      "compiledCode": "59011d01010029800aba2aba1aab9faab9eaab9dab9a48888896600264653001300700198039804000cdc3a400530070024888966002600460106ea800e26466453001159800980098059baa0028992cc004c008006266e24dd6980798069baa008375a601e60206020601a6ea8c03cc034dd5001c566002600c00313371090001bad300f300d375401114a2805900b18059baa0078b201498059baa0079807001a444b30013004002899192cc004c05000a00b1640486eb4c048004c03cdd5005456600260100051323259800980a00140162c8090dd6980900098079baa00a8acc004cdc3a400800515980098079baa00a801c5901045900d201a4034300c300d001370e900018049baa0038b200e180380098019baa0078a4d13656400401",
+      "hash": "df1c702e3a4f59139d60dbb2bc783ab684384214493bf95de79683bc"
+    },
+    {
+      "title": "m001/validator_structure.vending_machine.else",
+      "redeemer": {
+        "schema": {}
+      },
+      "compiledCode": "59011d01010029800aba2aba1aab9faab9eaab9dab9a48888896600264653001300700198039804000cdc3a400530070024888966002600460106ea800e26466453001159800980098059baa0028992cc004c008006266e24dd6980798069baa008375a601e60206020601a6ea8c03cc034dd5001c566002600c00313371090001bad300f300d375401114a2805900b18059baa0078b201498059baa0079807001a444b30013004002899192cc004c05000a00b1640486eb4c048004c03cdd5005456600260100051323259800980a00140162c8090dd6980900098079baa00a8acc004cdc3a400800515980098079baa00a801c5901045900d201a4034300c300d001370e900018049baa0038b200e180380098019baa0078a4d13656400401",
+      "hash": "df1c702e3a4f59139d60dbb2bc783ab684384214493bf95de79683bc"
+    }
+  ],
+  "definitions": {
+    "ByteArray": {
+      "dataType": "bytes"
+    },
+    "Int": {
+      "dataType": "integer"
+    },
+    "m001/first_spend/EscrowDatum": {
+      "title": "EscrowDatum",
+      "anyOf": [
+        {
+          "title": "EscrowDatum",
+          "dataType": "constructor",
+          "index": 0,
+          "fields": [
+            {
+              "title": "buyer",
+              "$ref": "#/definitions/ByteArray"
+            },
+            {
+              "title": "seller",
+              "$ref": "#/definitions/ByteArray"
+            },
+            {
+              "title": "amount",
+              "$ref": "#/definitions/Int"
+            }
+          ]
+        }
+      ]
+    },
+    "m001/first_spend/EscrowRedeemer": {
+      "title": "EscrowRedeemer",
+      "anyOf": [
+        {
+          "title": "Release",
+          "dataType": "constructor",
+          "index": 0,
+          "fields": []
+        },
+        {
+          "title": "Cancel",
+          "dataType": "constructor",
+          "index": 1,
+          "fields": []
+        }
+      ]
+    },
+    "m001/validator_structure/MintRedeemer": {
+      "title": "MintRedeemer",
+      "anyOf": [
+        {
+          "title": "TokenName",
+          "dataType": "constructor",
+          "index": 0,
+          "fields": [
+            {
+              "title": "name",
+              "$ref": "#/definitions/ByteArray"
+            }
+          ]
+        }
+      ]
+    },
+    "m001/validator_structure/VendingMachineDatum": {
+      "title": "VendingMachineDatum",
+      "anyOf": [
+        {
+          "title": "VendingMachineDatum",
+          "dataType": "constructor",
+          "index": 0,
+          "fields": [
+            {
+              "title": "owner",
+              "$ref": "#/definitions/ByteArray"
+            },
+            {
+              "title": "price_per_item",
+              "$ref": "#/definitions/Int"
+            },
+            {
+              "title": "items_remaining",
+              "$ref": "#/definitions/Int"
+            }
+          ]
+        }
+      ]
+    },
+    "m001/validator_structure/VendingMachineRedeemer": {
+      "title": "VendingMachineRedeemer",
+      "anyOf": [
+        {
+          "title": "Purchase",
+          "dataType": "constructor",
+          "index": 0,
+          "fields": [
+            {
+              "title": "quantity",
+              "$ref": "#/definitions/Int"
+            }
+          ]
+        },
+        {
+          "title": "Restock",
+          "dataType": "constructor",
+          "index": 1,
+          "fields": [
+            {
+              "title": "additional_items",
+              "$ref": "#/definitions/Int"
+            }
+          ]
+        },
+        {
+          "title": "Withdraw",
+          "dataType": "constructor",
+          "index": 2,
+          "fields": []
+        }
+      ]
+    }
+  }
+}
