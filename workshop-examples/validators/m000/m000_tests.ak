@@ -25,3 +25,17 @@ test string_test() {
   let greeting = @"Hello"
   greeting == @"Hello"
 }
+
+//TRACE MESSAGES
+test with_trace() {
+  trace @"Starting test"
+  let result = 5 * 5
+  trace @"Calculation complete"
+  result == 25
+}
+
+test trace_values() {
+  let x = 100
+  trace @"Value of x"
+  x == 100
+}
